@@ -2,14 +2,14 @@
 Module for Managing Local MS Word Documents
 
 This module provides a collection of functions and classes designed to manage
-MS Word files stored locally. It leverages the py2store framework to wrap local
+MS Word files stored locally. It leverages the `dol` framework to wrap local
 binary file stores and integrates the python-docx library for handling the
 content of MS Word documents. The module supports both retrieving full
 `docx.Document` objects and extracting plain text from documents.
 
 Main Classes:
     - AllLocalFilesDocxStore:
-          A wrapper around a local binary store (derived from py2store's Files)
+          A wrapper around a local binary store (derived from `dol`'s Files)
           that returns the content of files as `docx.Document` objects. This class does not
           filter files by their extension, so it may raise errors if non-MS Word files are encountered.
     - AllLocalFilesDocxTextStore:
@@ -223,9 +223,9 @@ class LocalDocxStore(AllLocalFilesDocxStore):
     You get the point...
 
     If you're only interested in one particular aspect of the documents, you should your favorite
-    py2store wrappers to get the store you really want. For example:
+    `dol` wrappers to get the store you really want. For example:
 
-    >>> from py2store import wrap_kvs
+    >>> from dol import wrap_kvs
     >>> ss = wrap_kvs(s, obj_of_data=lambda doc: [paragraph.style.style_id for paragraph in doc.paragraphs])
     >>> assert ss['with_doc_extension.doc'] == [
     ...     'Heading1', 'Normal', 'Normal', 'Heading2', 'Normal', 'Normal',
@@ -244,7 +244,7 @@ class LocalDocxTextStore(AllLocalFilesDocxTextStore):
     """Local files store returning, as values, text extracted from the documents.
     Use this when you just want the text contents of the document.
     If you want more, you'll need to user LocalDocxStore with the appropriate content extractor
-    (i.e. the obj_of_data function in a py2store.wrap_kvs wrapper).
+    (i.e. the obj_of_data function in a `dol.wrap_kvs` wrapper).
 
     Note: Filters for valid msword extensions (.doc and .docx).
     To Note filter for valid extensions, use AllLocalFilesDocxTextStore instead.

@@ -132,7 +132,7 @@ If you're only interested in one particular aspect of the documents, you should 
 `dol` wrappers to get the store you really want. For example:
 
 ```python
->>> from py2store import wrap_kvs
+>>> from dol import wrap_kvs
 >>> ss = wrap_kvs(s, obj_of_data=lambda doc: [paragraph.style.style_id for paragraph in doc.paragraphs])
 >>> assert ss['with_doc_extension.doc'] == [
 ...     'Heading1', 'Normal', 'Normal', 'Heading2', 'Normal', 'Normal',
