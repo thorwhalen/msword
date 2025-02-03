@@ -31,7 +31,7 @@ def test_msword_demo():
     _ = sorted(docs_text_content)
 
     # Access the text content of a specific document.
-    simple_doc_text = docs_text_content['simple.docx']
+    simple_doc_text = docs_text_content["simple.docx"]
 
     # --------------------------------------------------------------------------
     # Deconstructing LocalDocxTextStore:
@@ -41,7 +41,7 @@ def test_msword_demo():
     raw_files = Files(test_data_dir)
     _ = sorted(raw_files)
     # Get the raw bytes of 'simple.docx'
-    b = raw_files['simple.docx']
+    b = raw_files["simple.docx"]
     assert isinstance(b, bytes), "Value should be bytes"
     # For debugging purposes, you can print b or inspect it:
     # print(b)
@@ -51,7 +51,7 @@ def test_msword_demo():
     # Convert byte-valued mappings to return docx.Document objects.
     doc_objects = with_bytes_to_doc_decoding(raw_files)
     _ = sorted(doc_objects)
-    doc = doc_objects['simple.docx']
+    doc = doc_objects["simple.docx"]
     assert isinstance(doc, docx.document.Document), "Value should be a Document object"
     # Verify that the document has the expected number of paragraphs.
     assert len(doc.paragraphs) == 4
@@ -59,7 +59,7 @@ def test_msword_demo():
     doc_paragraphs_text = "\n".join(p.text for p in doc.paragraphs)
     assert (
         doc_paragraphs_text
-        == 'Just a bit of text to show that is works. Another sentence.\nThis is after a newline.\n\nThis is after two newlines.'
+        == "Just a bit of text to show that is works. Another sentence.\nThis is after a newline.\n\nThis is after two newlines."
     )
 
     # --------------------------------------------------------------------------
@@ -67,11 +67,11 @@ def test_msword_demo():
     # If only aggregated text is needed, convert byte-valued mappings to return text.
     doc_texts = with_bytes_to_text_decoding(raw_files)
     _ = sorted(doc_texts)
-    assert isinstance(doc_texts['simple.docx'], str), "Value should be a string"
-    simple_doc_text_again = doc_texts['simple.docx']
+    assert isinstance(doc_texts["simple.docx"], str), "Value should be a string"
+    simple_doc_text_again = doc_texts["simple.docx"]
     assert (
         simple_doc_text_again
-        == 'Just a bit of text to show that is works. Another sentence.\nThis is after a newline.\n\nThis is after two newlines.'
+        == "Just a bit of text to show that is works. Another sentence.\nThis is after a newline.\n\nThis is after two newlines."
     )
 
     # --------------------------------------------------------------------------
@@ -80,12 +80,12 @@ def test_msword_demo():
     # accessing a file that is not a valid MS Word document should raise an exception.
     with pytest.raises(Exception):
         # Expect an exception when trying to decode a non-MS Word file.
-        _ = doc_texts['not_an_msword_doc.txt']
+        _ = doc_texts["not_an_msword_doc.txt"]
 
     # If you want to only see files with MS Word extensions ('.doc' and '.docx'),
     # wrap your store with only_files_with_msword_extension.
     with_extension_filter = only_files_with_msword_extension(doc_texts)
-    assert sorted(with_extension_filter) == ['simple.docx', 'with_doc_extension.doc']
+    assert sorted(with_extension_filter) == ["simple.docx", "with_doc_extension.doc"]
 
     # --------------------------------------------------------------------------
     # Sourcing your MS Word content from anywhere
@@ -101,14 +101,14 @@ def test_msword_demo():
     )
 
     # Sourcing the zip: you can pass a zip file path or zip bytes.
-    zip_file_path = os.path.join(test_data_dir, 'some_zip_file.zip')
+    zip_file_path = os.path.join(test_data_dir, "some_zip_file.zip")
     zipped_doc_texts = msword_doc_texts_of_zip(zip_file_path)
 
     # List the keys in the zipped store.
-    assert sorted(zipped_doc_texts) == ['simple.docx', 'with_doc_extension.doc']
+    assert sorted(zipped_doc_texts) == ["simple.docx", "with_doc_extension.doc"]
 
     # Access the text content of 'simple.docx' from the zipped store.
-    assert zipped_doc_texts['simple.docx'] == doc_texts['simple.docx']
+    assert zipped_doc_texts["simple.docx"] == doc_texts["simple.docx"]
 
     # --------------------------------------------------------------------------
     # Removing extensions from keys
@@ -119,10 +119,9 @@ def test_msword_demo():
         zipped_doc_texts, decoder=lambda x: os.path.splitext(x)[0]
     )
     zipped_doc_texts_without_extensions = remove_extensions(zipped_doc_texts)
-    expected_keys = ['simple', 'with_doc_extension']
+    expected_keys = ["simple", "with_doc_extension"]
     assert sorted(zipped_doc_texts_without_extensions) == expected_keys
     # Ensure that the text for key 'simple' matches that for 'simple.docx'
     assert (
-        zipped_doc_texts_without_extensions['simple'] == zipped_doc_texts['simple.docx']
+        zipped_doc_texts_without_extensions["simple"] == zipped_doc_texts["simple.docx"]
     )
-

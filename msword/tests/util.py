@@ -2,7 +2,7 @@
 
 from importlib.resources import files
 
-project_name = 'msword'
+project_name = "msword"
 root_posix_path = files(project_name)
 
 
@@ -14,7 +14,7 @@ def local_text(*path):
     return local_posix(*path).read_text()
 
 
-test_data_path = ('tests', 'data')
+test_data_path = ("tests", "data")
 test_data_posix = local_posix(*test_data_path)
 test_data_dir = str(test_data_posix.absolute())
 

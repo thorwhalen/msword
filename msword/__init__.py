@@ -1,4 +1,5 @@
 """Simple access to docx (Word Doc) elements."""
+
 from msword.base import (
     LocalDocxStore,  # Local files store returning, as values, ``docx.document.Document`` objects.
     LocalDocxTextStore,  # Local files store returning, as values, text extracted from the documents.

@@ -84,13 +84,13 @@ from dol import Files, wrap_kvs, filt_iter, Pipe
 
 
 def _extension(k: str):
-    parts = k.split('.')
+    parts = k.split(".")
     if parts:
         return parts[-1]
 
 
-_msword_extensions = {'doc', 'docx'}
-_dflt_extension = '.docx'
+_msword_extensions = {"doc", "docx"}
+_dflt_extension = ".docx"
 _dflt_extension_len = len(_dflt_extension)
 
 
@@ -125,7 +125,7 @@ def paragraphs_text(doc):
         yield para.text
 
 
-DFLT_PARAGRAPH_SEP = '\n'
+DFLT_PARAGRAPH_SEP = "\n"
 
 
 def get_text_from_docx(doc, paragraph_sep=DFLT_PARAGRAPH_SEP):
