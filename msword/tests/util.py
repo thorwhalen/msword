@@ -1,3 +1,5 @@
+"""Tests for util module."""
+
 from importlib_resources import files
 
 project_name = 'msword'
