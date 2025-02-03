@@ -1,0 +1,8 @@
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+   module_docs/msword
+   module_docs/msword/base
+   module_docs/msword/tests/test_base
+   module_docs/msword/tests/util

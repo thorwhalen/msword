@@ -1,0 +1,4 @@
+msword.tests.test_base
+======================
+.. automodule:: msword.tests.test_base
+   :members:

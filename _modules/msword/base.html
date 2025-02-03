@@ -1,0 +1,391 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>msword.base &mdash; msword 0.0.4 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=fd3f3429" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8c5712d9"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            msword
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/msword.html">msword</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/msword/base.html">msword.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/msword/tests/test_base.html">msword.tests.test_base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/msword/tests/util.html">msword.tests.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">msword</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">msword.base</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for msword.base</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Module for Managing Local MS Word Documents</span>
+
+<span class="sd">This module provides a collection of functions and classes designed to manage</span>
+<span class="sd">MS Word files stored locally. It leverages the `dol` framework to wrap local</span>
+<span class="sd">binary file stores and integrates the python-docx library for handling the</span>
+<span class="sd">content of MS Word documents. The module supports both retrieving full</span>
+<span class="sd">`docx.Document` objects and extracting plain text from documents.</span>
+
+<span class="sd">Main Classes:</span>
+<span class="sd">    - AllLocalFilesDocxStore:</span>
+<span class="sd">          A wrapper around a local binary store (derived from `dol`&#39;s Files)</span>
+<span class="sd">          that returns the content of files as `docx.Document` objects. This class does not</span>
+<span class="sd">          filter files by their extension, so it may raise errors if non-MS Word files are encountered.</span>
+<span class="sd">    - AllLocalFilesDocxTextStore:</span>
+<span class="sd">          Extends AllLocalFilesDocxStore by applying the `get_text_from_docx` function,</span>
+<span class="sd">          returning plain text extracted from each document instead of the full document object.</span>
+<span class="sd">    - LocalDocxStore:</span>
+<span class="sd">          Inherits from AllLocalFilesDocxStore and applies the `only_files_with_msword_extension`</span>
+<span class="sd">          filter, ensuring that only files with valid MS Word extensions (&#39;.doc&#39; and &#39;.docx&#39;) are processed.</span>
+<span class="sd">          It returns `docx.Document` objects.</span>
+<span class="sd">    - LocalDocxTextStore:</span>
+<span class="sd">          Similar to LocalDocxStore, this class extends AllLocalFilesDocxTextStore and filters for</span>
+<span class="sd">          valid MS Word files. It returns the extracted text from the documents.</span>
+
+<span class="sd">Helper Functions:</span>
+<span class="sd">    - _extension(k: str):</span>
+<span class="sd">          Extracts the file extension from a filename (key) by splitting on dots.</span>
+<span class="sd">    - has_msword_extension(k: str):</span>
+<span class="sd">          Returns True if the key has a recognized MS Word extension (&#39;.doc&#39; or &#39;.docx&#39;).</span>
+<span class="sd">    - only_files_with_msword_extension(store):</span>
+<span class="sd">          Filters the keys of a store to include only those with valid MS Word extensions.</span>
+<span class="sd">    - _remove_docx_extension(k: str) and _add_docx_extension(k: str):</span>
+<span class="sd">          Utility functions to remove or add the default &#39;.docx&#39; extension to keys.</span>
+<span class="sd">    - paragraphs_text(doc):</span>
+<span class="sd">          A generator function that yields the text of each paragraph in a document.</span>
+<span class="sd">    - get_text_from_docx(doc, paragraph_sep=&#39;\n&#39;):</span>
+<span class="sd">          Concatenates the text from all paragraphs in a `docx.Document` object using</span>
+<span class="sd">          the specified separator.</span>
+<span class="sd">    - bytes_to_doc(doc_bytes):</span>
+<span class="sd">          Converts a bytes stream to a `docx.Document` object using an in-memory buffer.</span>
+
+<span class="sd">The relationships and dependencies between the main objects and helper functions are</span>
+<span class="sd">illustrated in the following mermaid graph:</span>
+
+<span class="sd">```mermaid</span>
+<span class="sd">flowchart TD</span>
+<span class="sd">    A[Files]</span>
+<span class="sd">    B[AllLocalFilesDocxStore]</span>
+<span class="sd">    C[AllLocalFilesDocxTextStore]</span>
+<span class="sd">    D[LocalDocxStore]</span>
+<span class="sd">    E[LocalDocxTextStore]</span>
+
+<span class="sd">    A --&gt; B</span>
+<span class="sd">    B --&gt; C</span>
+<span class="sd">    B --&gt; D</span>
+<span class="sd">    C --&gt; E</span>
+
+<span class="sd">    subgraph Helper Functions</span>
+<span class="sd">        F[bytes_to_doc]</span>
+<span class="sd">        G[get_text_from_docx]</span>
+<span class="sd">        H[has_msword_extension]</span>
+<span class="sd">        I[only_files_with_msword_extension]</span>
+<span class="sd">    end</span>
+
+<span class="sd">    F --&gt; B</span>
+<span class="sd">    G --&gt; C</span>
+<span class="sd">    H --&gt; I</span>
+<span class="sd">    I --&gt; D</span>
+<span class="sd">    I --&gt; E</span>
+<span class="sd">```</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">io</span><span class="w"> </span><span class="kn">import</span> <span class="n">BytesIO</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">docx</span>  <span class="c1"># (To install: pip install python-docx -- see https://automatetheboringstuff.com/chapter13/)</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">dol</span><span class="w"> </span><span class="kn">import</span> <span class="n">Files</span><span class="p">,</span> <span class="n">wrap_kvs</span><span class="p">,</span> <span class="n">filt_iter</span><span class="p">,</span> <span class="n">Pipe</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Baisc Helpers</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_extension</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parts</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">parts</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="n">_msword_extensions</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;doc&#39;</span><span class="p">,</span> <span class="s1">&#39;docx&#39;</span><span class="p">}</span>
+<span class="n">_dflt_extension</span> <span class="o">=</span> <span class="s1">&#39;.docx&#39;</span>
+<span class="n">_dflt_extension_len</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">_dflt_extension</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">has_msword_extension</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">_extension</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="ow">in</span> <span class="n">_msword_extensions</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_remove_docx_extension</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">k</span><span class="p">[:</span><span class="n">_dflt_extension_len</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_add_docx_extension</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="n">_dflt_extension</span>
+
+
+<div class="viewcode-block" id="extension_less_keys">
+<a class="viewcode-back" href="../../module_docs/msword/base.html#msword.base.extension_less_keys">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">extension_less_keys</span><span class="p">(</span><span class="n">store</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Will filter keys to only include .docx files, and not show that extension in keys.</span>
+<span class="sd">    Note: Should not be used along with only_files_with_msword_extension;</span>
+<span class="sd">    extension_less_keys already does its own key filtering.</span>
+
+<span class="sd">    ```</span>
+<span class="sd">    list(store)  # == [&#39;this.docx&#39;, &#39;is.doc&#39;, &#39;an.pdf&#39;, &#39;example.docx&#39;]</span>
+<span class="sd">    s = extension_less_keys(store)</span>
+<span class="sd">    list(s)  # # == [&#39;this&#39;, &#39;example&#39;]</span>
+<span class="sd">    ```</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">filt</span><span class="o">=</span><span class="n">_remove_docx_extension</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">paragraphs_text</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">para</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">paragraphs</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="n">para</span><span class="o">.</span><span class="n">text</span>
+
+
+<span class="n">DFLT_PARAGRAPH_SEP</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+
+<div class="viewcode-block" id="get_text_from_docx">
+<a class="viewcode-back" href="../../module_docs/msword/base.html#msword.base.get_text_from_docx">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_text_from_docx</span><span class="p">(</span><span class="n">doc</span><span class="p">,</span> <span class="n">paragraph_sep</span><span class="o">=</span><span class="n">DFLT_PARAGRAPH_SEP</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get text from docx.Document object.</span>
+<span class="sd">    More precisely, &#39;text&#39; will be the concatenation of the .text attributes of every paragraph.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">paragraph_sep</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">paragraphs_text</span><span class="p">(</span><span class="n">doc</span><span class="p">))</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">bytes_to_doc</span><span class="p">(</span><span class="n">doc_bytes</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">docx</span><span class="o">.</span><span class="n">Document</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">doc_bytes</span><span class="p">))</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Mapping wrappers: Use as decorators to wrap Mappings to get the desired behavior</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">only_files_with_msword_extension</span><span class="p">(</span><span class="n">store</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">filt_iter</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">filt</span><span class="o">=</span><span class="n">has_msword_extension</span><span class="p">)</span>
+
+
+<span class="n">with_bytes_to_doc_decoding</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span><span class="n">value_decoder</span><span class="o">=</span><span class="n">bytes_to_doc</span><span class="p">)</span>
+<span class="n">with_doc_to_text_decoding</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span><span class="n">value_decoder</span><span class="o">=</span><span class="n">get_text_from_docx</span><span class="p">)</span>
+<span class="n">with_bytes_to_text_decoding</span> <span class="o">=</span> <span class="n">wrap_kvs</span><span class="p">(</span>
+    <span class="n">value_decoder</span><span class="o">=</span><span class="n">Pipe</span><span class="p">(</span><span class="n">bytes_to_doc</span><span class="p">,</span> <span class="n">get_text_from_docx</span><span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1"># --------------------------------------------------------------------------------------</span>
+<span class="c1"># Local stores (i.e. Mappings) that work with msword files</span>
+<span class="c1"># Contributor: Note how the objects&#39; functionality is entirely defined by the</span>
+<span class="c1"># superclases and decorators used to wrap them.</span>
+
+
+<div class="viewcode-block" id="AllLocalFilesDocxStore">
+<a class="viewcode-back" href="../../module_docs/msword/base.html#msword.base.AllLocalFilesDocxStore">[docs]</a>
+<span class="nd">@with_bytes_to_doc_decoding</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AllLocalFilesDocxStore</span><span class="p">(</span><span class="n">Files</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Local files store returning, as values, ``docx.document.Document`` objects.</span>
+<span class="sd">    Note: Doesn&#39;t filter for valid msword extensions (.doc and .docx), so could raise errors.</span>
+<span class="sd">    To filter for valid extensions, use LocalDocxStore instead.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="AllLocalFilesDocxTextStore">
+<a class="viewcode-back" href="../../module_docs/msword/base.html#msword.base.AllLocalFilesDocxTextStore">[docs]</a>
+<span class="nd">@wrap_kvs</span><span class="p">(</span><span class="n">obj_of_data</span><span class="o">=</span><span class="n">get_text_from_docx</span><span class="p">)</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">AllLocalFilesDocxTextStore</span><span class="p">(</span><span class="n">AllLocalFilesDocxStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Local files store returning, as values, text extracted from the documents.</span>
+<span class="sd">    Note: Doesn&#39;t filter for valid msword extensions (.doc and .docx), so could raise errors.</span>
+<span class="sd">    To filter for valid extensions, use LocalDocxTextStore instead.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="LocalDocxStore">
+<a class="viewcode-back" href="../../module_docs/msword/base.html#msword.base.LocalDocxStore">[docs]</a>
+<span class="nd">@only_files_with_msword_extension</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LocalDocxStore</span><span class="p">(</span><span class="n">AllLocalFilesDocxStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Local files store returning, as values, docx objects.</span>
+<span class="sd">    Note: Filters for valid msword extensions (.doc and .docx).</span>
+<span class="sd">    To NOT filter for valid extensions, use AllLocalFilesDocxStore instead.</span>
+
+<span class="sd">    &gt;&gt;&gt; from msword import LocalDocxStore, test_data_dir</span>
+<span class="sd">    &gt;&gt;&gt; import docx</span>
+<span class="sd">    &gt;&gt;&gt; s = LocalDocxStore(test_data_dir)</span>
+<span class="sd">    &gt;&gt;&gt; assert {&#39;with_doc_extension.doc&#39;, &#39;simple.docx&#39;}.issubset(s)</span>
+<span class="sd">    &gt;&gt;&gt; v = s[&#39;with_doc_extension.doc&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; assert isinstance(v, docx.document.Document)</span>
+
+<span class="sd">    What does a ``docx.document.Document`` have to offer?</span>
+<span class="sd">    If you really want to get into it, see here: https://python-docx.readthedocs.io/en/latest/</span>
+
+<span class="sd">    Meanwhile, we&#39;ll give a few examples here as an amuse-bouche.</span>
+
+<span class="sd">    &gt;&gt;&gt; ddir = lambda x: set([xx for xx in dir(x) if not xx.startswith(&#39;_&#39;)])  # to see what an object has</span>
+<span class="sd">    &gt;&gt;&gt; assert ddir(v).issuperset({</span>
+<span class="sd">    ...     &#39;add_heading&#39;, &#39;add_page_break&#39;, &#39;add_paragraph&#39;, &#39;add_picture&#39;, &#39;add_section&#39;, &#39;add_table&#39;,</span>
+<span class="sd">    ...     &#39;core_properties&#39;, &#39;element&#39;, &#39;inline_shapes&#39;, &#39;paragraphs&#39;, &#39;part&#39;,</span>
+<span class="sd">    ...     &#39;save&#39;, &#39;sections&#39;, &#39;settings&#39;, &#39;styles&#39;, &#39;tables&#39;</span>
+<span class="sd">    ... })</span>
+
+<span class="sd">    ``paragraphs`` is where the main content is, so let&#39;s have a look at what it has.</span>
+
+<span class="sd">    &gt;&gt;&gt; len(v.paragraphs)</span>
+<span class="sd">    21</span>
+<span class="sd">    &gt;&gt;&gt; paragraph = v.paragraphs[0]</span>
+<span class="sd">    &gt;&gt;&gt; assert ddir(paragraph).issuperset({</span>
+<span class="sd">    ...     &#39;add_run&#39;, &#39;alignment&#39;, &#39;clear&#39;, &#39;insert_paragraph_before&#39;,</span>
+<span class="sd">    ...     &#39;paragraph_format&#39;, &#39;part&#39;, &#39;runs&#39;, &#39;style&#39;, &#39;text&#39;</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; paragraph.text</span>
+<span class="sd">    &#39;Section 1&#39;</span>
+<span class="sd">    &gt;&gt;&gt; assert ddir(paragraph.style).issuperset({</span>
+<span class="sd">    ...     &#39;base_style&#39;, &#39;builtin&#39;, &#39;delete&#39;, &#39;element&#39;, &#39;font&#39;, &#39;hidden&#39;, &#39;locked&#39;, &#39;name&#39;, &#39;next_paragraph_style&#39;,</span>
+<span class="sd">    ...     &#39;paragraph_format&#39;, &#39;part&#39;, &#39;priority&#39;, &#39;quick_style&#39;, &#39;style_id&#39;, &#39;type&#39;, &#39;unhide_when_used&#39;</span>
+<span class="sd">    ... })</span>
+<span class="sd">    &gt;&gt;&gt; paragraph.style.style_id</span>
+<span class="sd">    &#39;Heading1&#39;</span>
+<span class="sd">    &gt;&gt;&gt; paragraph.style.font.color.rgb</span>
+<span class="sd">    RGBColor(0x2f, 0x54, 0x96)</span>
+
+<span class="sd">    You get the point...</span>
+
+<span class="sd">    If you&#39;re only interested in one particular aspect of the documents, you should your favorite</span>
+<span class="sd">    `dol` wrappers to get the store you really want. For example:</span>
+
+<span class="sd">    &gt;&gt;&gt; from dol import wrap_kvs</span>
+<span class="sd">    &gt;&gt;&gt; ss = wrap_kvs(s, obj_of_data=lambda doc: [paragraph.style.style_id for paragraph in doc.paragraphs])</span>
+<span class="sd">    &gt;&gt;&gt; assert ss[&#39;with_doc_extension.doc&#39;] == [</span>
+<span class="sd">    ...     &#39;Heading1&#39;, &#39;Normal&#39;, &#39;Normal&#39;, &#39;Heading2&#39;, &#39;Normal&#39;, &#39;Normal&#39;,</span>
+<span class="sd">    ...     &#39;Heading1&#39;, &#39;Normal&#39;, &#39;Normal&#39;, &#39;Normal&#39;, &#39;Normal&#39;, &#39;Normal&#39;, &#39;Normal&#39;, &#39;Normal&#39;,</span>
+<span class="sd">    ...     &#39;ListParagraph&#39;, &#39;ListParagraph&#39;, &#39;Normal&#39;, &#39;Normal&#39;, &#39;ListParagraph&#39;, &#39;ListParagraph&#39;, &#39;Normal&#39;</span>
+<span class="sd">    ... ]</span>
+
+<span class="sd">    The most common use case is probably getting text, not styles, out of a document.</span>
+<span class="sd">    It&#39;s so common, that we&#39;ve done the wrapping for you:</span>
+<span class="sd">    Just use the already wrapped LocalDocxTextStore store for that purpose.</span>
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="LocalDocxTextStore">
+<a class="viewcode-back" href="../../module_docs/msword/base.html#msword.base.LocalDocxTextStore">[docs]</a>
+<span class="nd">@only_files_with_msword_extension</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">LocalDocxTextStore</span><span class="p">(</span><span class="n">AllLocalFilesDocxTextStore</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Local files store returning, as values, text extracted from the documents.</span>
+<span class="sd">    Use this when you just want the text contents of the document.</span>
+<span class="sd">    If you want more, you&#39;ll need to user LocalDocxStore with the appropriate content extractor</span>
+<span class="sd">    (i.e. the obj_of_data function in a `dol.wrap_kvs` wrapper).</span>
+
+<span class="sd">    Note: Filters for valid msword extensions (.doc and .docx).</span>
+<span class="sd">    To Note filter for valid extensions, use AllLocalFilesDocxTextStore instead.</span>
+
+<span class="sd">    &gt;&gt;&gt; from msword import LocalDocxTextStore, test_data_dir</span>
+<span class="sd">    &gt;&gt;&gt; import docx</span>
+<span class="sd">    &gt;&gt;&gt; s = LocalDocxTextStore(test_data_dir)</span>
+<span class="sd">    &gt;&gt;&gt; assert {&#39;with_doc_extension.doc&#39;, &#39;simple.docx&#39;}.issubset(s)</span>
+<span class="sd">    &gt;&gt;&gt; v = s[&#39;simple.docx&#39;]</span>
+<span class="sd">    &gt;&gt;&gt; assert isinstance(v, str)</span>
+<span class="sd">    &gt;&gt;&gt; print(v)</span>
+<span class="sd">    Just a bit of text to show that is works. Another sentence.</span>
+<span class="sd">    This is after a newline.</span>
+<span class="sd">    &lt;BLANKLINE&gt;</span>
+<span class="sd">    This is after two newlines.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright NO COPYRIGHT.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

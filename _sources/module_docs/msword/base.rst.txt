@@ -1,0 +1,4 @@
+msword.base
+===========
+.. automodule:: msword.base
+   :members:

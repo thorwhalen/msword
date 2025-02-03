@@ -1,0 +1,4 @@
+msword.tests.util
+=================
+.. automodule:: msword.tests.util
+   :members:
