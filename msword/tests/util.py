@@ -1,6 +1,6 @@
 """Tests for util module."""
 
-from importlib_resources import files
+from importlib.resources import files
 
 project_name = 'msword'
 root_posix_path = files(project_name)
