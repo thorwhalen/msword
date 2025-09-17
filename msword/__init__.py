@@ -11,5 +11,6 @@ from msword.base import (
     with_bytes_to_text_decoding,  # Wrap a Mapping to decode bytes to text extracted from docx.Document objects
     with_bytes_to_doc_decoding,  # Wrap a Mapping to decode bytes to docx.Document objects.
     with_doc_to_text_decoding,  # Wrap a Mapping to decode docx.Document objects to text.
+    bytes_to_doc,  # get a docx.Document instance from bytes content
 )
 from msword.tests.util import test_data_dir, test_data_posix
