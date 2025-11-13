@@ -72,7 +72,7 @@ flowchart TD
 
 """
 
-from typing import Mapping
+from collections.abc import Mapping
 from io import BytesIO
 import docx  # (To install: pip install python-docx -- see https://automatetheboringstuff.com/chapter13/)
 
