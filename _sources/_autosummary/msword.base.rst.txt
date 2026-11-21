@@ -1,0 +1,26 @@
+msword.base
+===========
+
+.. automodule:: msword.base
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      bytes_to_doc
+      extension_less_keys
+      get_text_from_docx
+      has_msword_extension
+      only_files_with_msword_extension
+      paragraphs_text
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      AllLocalFilesDocxStore
+      AllLocalFilesDocxTextStore
+      LocalDocxStore
+      LocalDocxTextStore
+   

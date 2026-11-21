@@ -1,0 +1,13 @@
+# msword
+
+> Simple mapping view to docx (Word Doc) elements
+
+
+## Pages in this subsection
+
+- [msword](msword.html.md): Simple access to docx (Word Doc) elements.
+- [msword.base](msword.base.html.md): Module for Managing Local MS Word Documents
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

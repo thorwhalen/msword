@@ -1,4 +1,0 @@
-msword
-======
-.. automodule:: msword
-   :members:

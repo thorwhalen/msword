@@ -1,0 +1,20 @@
+# msword
+
+> Simple mapping view to docx (Word Doc) elements
+
+
+## Pages
+
+- [msword: local files Manager(s)](index.html.md): Simple mapping view to docx (Word Doc) elements
+- [API reference](api.html.md): | &#96;msword&#96;   | Simple access to docx (Word Doc) elements.   |
+- [msword](_autosummary/msword.html.md): Simple access to docx (Word Doc) elements.
+- [msword.base](_autosummary/msword.base.html.md): Module for Managing Local MS Word Documents
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-21 18:45 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+
+## Optional
+
+- [msword.md](msword.md): Complete documentation in a single file.
+
+## Build
+
+- [build_info.json](build_info.json): build provenance (commit, version, tool versions, whether the docs match the package)

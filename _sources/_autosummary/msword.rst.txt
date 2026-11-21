@@ -1,0 +1,13 @@
+﻿msword
+======
+
+.. automodule:: msword
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   base
