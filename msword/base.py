@@ -167,7 +167,7 @@ class AllLocalFilesDocxStore(Files):
     """
 
 
-@wrap_kvs(obj_of_data=get_text_from_docx)
+@wrap_kvs(value_decoder=get_text_from_docx)
 class AllLocalFilesDocxTextStore(AllLocalFilesDocxStore):
     """Local files store returning, as values, text extracted from the documents.
     Note: Doesn't filter for valid msword extensions (.doc and .docx), so could raise errors.
@@ -226,7 +226,7 @@ class LocalDocxStore(AllLocalFilesDocxStore):
     `dol` wrappers to get the store you really want. For example:
 
     >>> from dol import wrap_kvs
-    >>> ss = wrap_kvs(s, obj_of_data=lambda doc: [paragraph.style.style_id for paragraph in doc.paragraphs])
+    >>> ss = wrap_kvs(s, value_decoder=lambda doc: [paragraph.style.style_id for paragraph in doc.paragraphs])
     >>> assert ss['with_doc_extension.doc'] == [
     ...     'Heading1', 'Normal', 'Normal', 'Heading2', 'Normal', 'Normal',
     ...     'Heading1', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal',
@@ -244,7 +244,7 @@ class LocalDocxTextStore(AllLocalFilesDocxTextStore):
     """Local files store returning, as values, text extracted from the documents.
     Use this when you just want the text contents of the document.
     If you want more, you'll need to user LocalDocxStore with the appropriate content extractor
-    (i.e. the obj_of_data function in a `dol.wrap_kvs` wrapper).
+    (i.e. the value_decoder function in a `dol.wrap_kvs` wrapper).
 
     Note: Filters for valid msword extensions (.doc and .docx).
     To Note filter for valid extensions, use AllLocalFilesDocxTextStore instead.
