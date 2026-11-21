@@ -56,7 +56,7 @@ print(doc.paragraphs[0].text)
 Local files store returning, as values, text extracted from the documents.
 Use this when you just want the text contents of the document.
 If you want more, you'll need to user `LocalDocxStore` with the appropriate content extractor
-(i.e. the obj_of_data function in a `dol.wrap_kvs` wrapper).
+(i.e. the value_decoder function in a `dol.wrap_kvs` wrapper).
 
 Note: Filters for valid msword extensions (.doc and .docx).
 To NOT filter for valid extensions, use ``AllLocalFilesDocxTextStore`` instead.
@@ -133,7 +133,7 @@ If you're only interested in one particular aspect of the documents, you should 
 
 ```python
 >>> from dol import wrap_kvs
->>> ss = wrap_kvs(s, obj_of_data=lambda doc: [paragraph.style.style_id for paragraph in doc.paragraphs])
+>>> ss = wrap_kvs(s, value_decoder=lambda doc: [paragraph.style.style_id for paragraph in doc.paragraphs])
 >>> assert ss['with_doc_extension.doc'] == [
 ...     'Heading1', 'Normal', 'Normal', 'Heading2', 'Normal', 'Normal',
 ...     'Heading1', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal', 'Normal',
