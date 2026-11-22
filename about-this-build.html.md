@@ -2,7 +2,7 @@
 
 # About this build
 
-This documentation was built on **2026-11-21 18:45 UTC** from commit <a href="https://github.com/thorwhalen/msword/commit/9c5ceecc1ef9ab7f014d1e0fd9cedb504f353d5c"><code>9c5ceec</code></a> on branch <code>master</code>, for **msword 0.0.8** (from <code>setup.cfg</code>).
+This documentation was built on **2026-11-22 21:40 UTC** from commit <a href="https://github.com/thorwhalen/msword/commit/6d6063c41cf7e300d2f2b46ad4df175b6e3d9206"><code>6d6063c</code></a> on branch <code>master</code>, for **msword 0.0.8** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -11,9 +11,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/msword/commit/9c5ceecc1ef9ab7f014d1e0fd9cedb504f353d5c"><code>9c5ceecc1ef9ab7f014d1e0fd9cedb504f353d5c</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/msword/commit/6d6063c41cf7e300d2f2b46ad4df175b6e3d9206"><code>6d6063c41cf7e300d2f2b46ad4df175b6e3d9206</code></a> |
 | Branch              | <code>master</code>                                                                                                                                      |
-| Tags at this commit | <code>0.0.8</code>                                                                                                                                       |
+| Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
 | Remote              | <code>https://github.com/thorwhalen/msword</code>                                                                                                        |
 
@@ -22,9 +22,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/msword</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/msword/actions/runs/44937127824">44937127824</a>    |
+| Run          | <a href="https://github.com/thorwhalen/msword/actions/runs/45073254423">45073254423</a>    |
 | Ref          | <code>refs/heads/master</code>                                                             |
-| Event commit | <code>3369e7844aa2609210d367d525883458b45c8985</code> (in the history of the built commit) |
+| Event commit | <code>6d6063c41cf7e300d2f2b46ad4df175b6e3d9206</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -55,7 +55,7 @@ Latest release: <a href="https://pypi.org/project/msword/0.0.8/">0.0.8</a>, the 
 
 ```bash
 git clone https://github.com/thorwhalen/msword && cd msword
-git checkout 9c5ceecc1ef9ab7f014d1e0fd9cedb504f353d5c
+git checkout 6d6063c41cf7e300d2f2b46ad4df175b6e3d9206
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

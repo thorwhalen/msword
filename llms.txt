@@ -9,7 +9,7 @@
 - [API reference](api.html.md): | &#96;msword&#96;   | Simple access to docx (Word Doc) elements.   |
 - [msword](_autosummary/msword.html.md): Simple access to docx (Word Doc) elements.
 - [msword.base](_autosummary/msword.base.html.md): Module for Managing Local MS Word Documents
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-21 18:45 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-11-22 21:40 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 
