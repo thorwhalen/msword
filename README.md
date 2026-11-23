@@ -1,12 +1,12 @@
 
-# msword: local files Manager(s)
+# msword
 
-Simple mapping view to docx (Word Doc) elements
+A mapping view of a folder of Word documents: `store[filename]` gives you the text, or the full `docx.Document`, of that file.
 
-To install:	```pip install msword```
+```bash
+pip install msword
+```
 
-
-- [Installation](#installation)
 - [Quick Start](#quick-start)
 - [LocalDocxTextStore](#localdocxtextstore)
 - [LocalDocxStore](#localdocxstore)
@@ -53,13 +53,9 @@ print(doc.paragraphs[0].text)
 
 ## LocalDocxTextStore
 
-Local files store returning, as values, text extracted from the documents.
-Use this when you just want the text contents of the document.
-If you want more, you'll need to user `LocalDocxStore` with the appropriate content extractor
-(i.e. the value_decoder function in a `dol.wrap_kvs` wrapper).
+Local files store returning, as values, text extracted from the documents. Use this when you just want the text contents of the document. If you want more, you'll need to user `LocalDocxStore` with the appropriate content extractor (i.e. the value_decoder function in a `dol.wrap_kvs` wrapper).
 
-Note: Filters for valid msword extensions (.doc and .docx).
-To NOT filter for valid extensions, use ``AllLocalFilesDocxTextStore`` instead.
+Note: Filters for valid msword extensions (.doc and .docx). To NOT filter for valid extensions, use ``AllLocalFilesDocxTextStore`` instead.
 
 ```python
 >>> from msword import LocalDocxTextStore, test_data_dir
@@ -77,9 +73,7 @@ This is after two newlines.
 
 ## LocalDocxStore
 
-Local files store returning, as values, docx objects.
-Note: Filters for valid msword extensions (.doc and .docx).
-To Note filter for valid extensions, use ``AllLocalFilesDocxStore`` instead.
+Local files store returning, as values, docx objects. Note: Filters for valid msword extensions (.doc and .docx). To Note filter for valid extensions, use ``AllLocalFilesDocxStore`` instead.
 
 ```python
 >>> from msword import LocalDocxStore, test_data_dir
@@ -90,8 +84,7 @@ To Note filter for valid extensions, use ``AllLocalFilesDocxStore`` instead.
 >>> assert isinstance(v, docx.document.Document)
 ```
 
-What does a ``docx.document.Document`` have to offer?
-If you really want to get into it, see here: https://python-docx.readthedocs.io/en/latest/
+What does a ``docx.document.Document`` have to offer? If you really want to get into it, see here: https://python-docx.readthedocs.io/en/latest/
 
 Meanwhile, we'll give a few examples here as an amuse-bouche.
 
@@ -128,8 +121,7 @@ RGBColor(0x2f, 0x54, 0x96)
 
 You get the point...
 
-If you're only interested in one particular aspect of the documents, you should your favorite
-`dol` wrappers to get the store you really want. For example:
+If you're only interested in one particular aspect of the documents, you should your favorite `dol` wrappers to get the store you really want. For example:
 
 ```python
 >>> from dol import wrap_kvs
@@ -141,9 +133,7 @@ If you're only interested in one particular aspect of the documents, you should 
 ... ]
 ```
 
-The most common use case is probably getting text, not styles, out of a document.
-It's so common, that we've done the wrapping for you:
-Just use the already wrapped LocalDocxTextStore store for that purpose.
+The most common use case is probably getting text, not styles, out of a document. It's so common, that we've done the wrapping for you: Just use the already wrapped LocalDocxTextStore store for that purpose.
 
 
 ---
@@ -154,51 +144,37 @@ The module is built around a set of core classes and helper functions. Its funct
 
 ### Main Classes
 
-- **AllLocalFilesDocxStore**  
-  A wrapper around a local file store that returns file contents as `docx.Document` objects. This class does not filter file extensions, meaning that non-MS Word files might cause errors.
+- **AllLocalFilesDocxStore** A wrapper around a local file store that returns file contents as `docx.Document` objects. This class does not filter file extensions, meaning that non-MS Word files might cause errors.
 
-- **AllLocalFilesDocxTextStore**  
-  Inherits from `AllLocalFilesDocxStore` and applies a text extraction function (`get_text_from_docx`). It returns the concatenated text of all paragraphs in the document.
+- **AllLocalFilesDocxTextStore** Inherits from `AllLocalFilesDocxStore` and applies a text extraction function (`get_text_from_docx`). It returns the concatenated text of all paragraphs in the document.
 
-- **LocalDocxStore**  
-  Extends `AllLocalFilesDocxStore` and uses the `only_files_with_msword_extension` decorator to filter out files that do not have valid MS Word extensions (i.e., `.doc` or `.docx`).
+- **LocalDocxStore** Extends `AllLocalFilesDocxStore` and uses the `only_files_with_msword_extension` decorator to filter out files that do not have valid MS Word extensions (i.e., `.doc` or `.docx`).
 
-- **LocalDocxTextStore**  
-  Extends `AllLocalFilesDocxTextStore` and applies the same file filtering as `LocalDocxStore`, ensuring that only valid MS Word files are processed.
+- **LocalDocxTextStore** Extends `AllLocalFilesDocxTextStore` and applies the same file filtering as `LocalDocxStore`, ensuring that only valid MS Word files are processed.
 
 ### Helper Functions
 
-- **_extension(k: str)**  
-  Splits a filename and returns its extension.
+- **_extension(k: str)** Splits a filename and returns its extension.
 
-- **has_msword_extension(k: str)**  
-  Checks if a filename has a valid MS Word extension (`doc` or `docx`).
+- **has_msword_extension(k: str)** Checks if a filename has a valid MS Word extension (`doc` or `docx`).
 
-- **_remove_docx_extension(k: str) & _add_docx_extension(k: str)**  
-  Utilities to remove or add the default `.docx` extension to keys.
+- **_remove_docx_extension(k: str) & _add_docx_extension(k: str)** Utilities to remove or add the default `.docx` extension to keys.
 
-- **paragraphs_text(doc)**  
-  Yields the text from each paragraph of a `docx.Document`.
+- **paragraphs_text(doc)** Yields the text from each paragraph of a `docx.Document`.
 
-- **get_text_from_docx(doc, paragraph_sep='\n')**  
-  Concatenates all paragraph texts from a document using the specified separator.
+- **get_text_from_docx(doc, paragraph_sep='\n')** Concatenates all paragraph texts from a document using the specified separator.
 
-- **bytes_to_doc(doc_bytes: bytes)**  
-  Converts raw bytes into a `docx.Document` using an in-memory buffer.
+- **bytes_to_doc(doc_bytes: bytes)** Converts raw bytes into a `docx.Document` using an in-memory buffer.
 
 ### Mapping Wrappers
 
-- **with_bytes_to_doc_decoding**  
-  Wraps a mapping to convert byte values into `docx.Document` objects.
+- **with_bytes_to_doc_decoding** Wraps a mapping to convert byte values into `docx.Document` objects.
 
-- **with_doc_to_text_decoding**  
-  Wraps a mapping to convert `docx.Document` objects into text.
+- **with_doc_to_text_decoding** Wraps a mapping to convert `docx.Document` objects into text.
 
-- **with_bytes_to_text_decoding**  
-  Combines the two above by first converting bytes into a document and then extracting its text.
+- **with_bytes_to_text_decoding** Combines the two above by first converting bytes into a document and then extracting its text.
 
-- **only_files_with_msword_extension**  
-  Filters the keys of a store so that only those with valid MS Word extensions are processed.
+- **only_files_with_msword_extension** Filters the keys of a store so that only those with valid MS Word extensions are processed.
 
 ---
 
