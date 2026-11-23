@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T21:40:13Z",
+  "built_at": "2026-11-23T02:44:52Z",
   "package": {
     "name": "msword",
     "version": "0.0.8",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "6d6063c41cf7e300d2f2b46ad4df175b6e3d9206",
-    "short_commit": "6d6063c",
+    "commit": "d21bb4416d9028136a2876c464e71486ab5ac1a7",
+    "short_commit": "d21bb44",
     "branch": "master",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/msword",
-    "commit_url": "https://github.com/thorwhalen/msword/commit/6d6063c41cf7e300d2f2b46ad4df175b6e3d9206",
+    "commit_url": "https://github.com/thorwhalen/msword/commit/d21bb4416d9028136a2876c464e71486ab5ac1a7",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/msword",
-    "sha": "6d6063c41cf7e300d2f2b46ad4df175b6e3d9206",
+    "sha": "d21bb4416d9028136a2876c464e71486ab5ac1a7",
     "sha_in_history": true,
     "ref": "refs/heads/master",
     "ref_name": "master",
-    "run_id": "45073254423",
-    "run_url": "https://github.com/thorwhalen/msword/actions/runs/45073254423",
+    "run_id": "45101816183",
+    "run_url": "https://github.com/thorwhalen/msword/actions/runs/45101816183",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -64,7 +64,7 @@
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/msword && cd msword\ngit checkout 6d6063c41cf7e300d2f2b46ad4df175b6e3d9206\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/msword && cd msword\ngit checkout d21bb4416d9028136a2876c464e71486ab5ac1a7\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,
