@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "msword"
-version = "0.0.8"
+version = "0.0.9"
 description = "Simple mapping view to docx (Word Doc) elements"
 readme = "README.md"
 requires-python = ">=3.10"
